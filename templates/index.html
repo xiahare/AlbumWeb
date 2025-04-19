@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>精彩瞬间 · 家和万事兴</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: "Helvetica Neue", sans-serif;
+            background: #fdf6ec;
+            color: #5a3e36;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #b14b4b;
+            font-size: 26px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .tab {
+            display: inline-block;
+            margin: 5px 10px;
+            padding: 6px 14px;
+            background-color: #fff2e8;
+            color: #b14b4b;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+        }
+        .tab:hover {
+            background-color: #fbd6c6;
+        }
+        .tab.current {
+            background-color: #fbd6c6;
+        }
+        .breadcrumb {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .breadcrumb a {
+            color: #b14b4b;
+            text-decoration: none;
+            margin-right: 5px;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .thumb {
+            width: 160px;
+            margin: 10px;
+            display: inline-block;
+            vertical-align: top;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .thumb:hover {
+            transform: scale(1.03);
+        }
+        .thumb img, .thumb video {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+        .thumb a {
+            color: #5a3e36;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h2>📸 精彩瞬间 · 家和万事兴</h2>
+
+    {% if tabs %}
+        <div style="text-align:center;">
+        {% for tab in tabs %}
+            <a class="tab{% if tab.path == current.split('/')[0] %} current{% endif %}" href="/browse/{{ tab.path }}">{{ tab.display }}</a>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if breadcrumb %}
+        <div class="breadcrumb">
+        当前位置：
+        {% for name, path in breadcrumb %}
+            <a href="/browse/{{ path }}">{{ name }}</a> /
+        {% endfor %}
+        </div>
+    {% endif %}
+
+    <div style="margin-top: 20px;">
+    {% for item in items %}
+        {% if item.type == 'dir' %}
+            <div class="thumb">
+                <a href="/browse/{{ item.path }}">📁 {{ item.display }}</a>
+            </div>
+        {% elif item.type == 'image' %}
+            <div class="thumb">
+                <a href="/media/{{ item.path }}">
+                    <img src="{{ item.thumb }}" alt="{{ item.display }}">
+                </a>
+                <div>{{ item.display }}</div>
+            </div>
+        {% elif item.type == 'video' %}
+            <div class="thumb">
+                <video controls>
+                    <source src="/media/{{ item.path }}">
+                </video>
+                <div>{{ item.display }}</div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+</body>
+</html>
