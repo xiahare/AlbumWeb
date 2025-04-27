@@ -11,7 +11,7 @@
 ## 启动命令
 
 ```
-sudo python3 app.py
+nohup sudo python3 app.py > output.log 2>&1 &
 ```
 
 默认监听 80 端口，确保没有其他程序占用。
